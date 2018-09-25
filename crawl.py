@@ -86,7 +86,7 @@ class SpiderThread(threading.Thread):
 		
 
 	def get_by_request(self):
-		html = requests.get(url=self.deep_url[1],timeout=10,headers=HEADER).content
+		html = requests.get(url=self.deep_url[1],timeout=10,headers=HEADER).text
 		return html
 
 	def get_by_selenium(self):
