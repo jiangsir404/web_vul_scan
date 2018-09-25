@@ -69,12 +69,12 @@ class SpiderThread(threading.Thread):
 		
 		try:
 			html = self.get_by_request()
-			# print html,type(html)
-			if chardet.detect(html)['encoding'] == 'GB2312':
-				html = html.decode('gb2312').encode('utf8')
-			if chardet.detect(html)['encoding'] == 'unicode':
-				html = html.encode('utf8')
-			html = html.encode('utf-8')
+			# if chardet.detect(html)['encoding'] == 'GB2312':
+			# 	html = html.decode('gb2312').encode('utf8')
+			# if chardet.detect(html)['encoding'] == 'UNICODE':
+			# 	html = html.encode('utf8')
+			html = html.encode('UTF-8')
+			#print type(html)
 			link_list = self.GetLinks(self.target,html)
 			return link_list
 

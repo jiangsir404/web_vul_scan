@@ -16691,3 +16691,163 @@
 2018-09-25 11:01:42	http://ty.evergrande.com/ProductMap.aspx?typeid=28# => safe
 2018-09-25 11:01:42	Crawl url:http://ty.evergrande.com/ProductMap.aspx?typeid=28# depth:2
 [-] All crawl finish...
+[+] start scan target http://jxgl.bistu.edu.cn/portal.do?ticket=ST-30125-R51IrSbQLK3AfddaQ5Iv-portal.zfsoft.com...
+2018-09-25 12:05:07	Http error:Expected object of type bytes or bytearray, got: <type 'unicode'>	url:http://jxgl.bistu.edu.cn/portal.do?ticket=ST-30125-R51IrSbQLK3AfddaQ5Iv-portal.zfsoft.com
+2018-09-25 12:05:07	Http error:Expected object of type bytes or bytearray, got: <type 'unicode'>	url:http://jxgl.bistu.edu.cn/portal.do?ticket=ST-30125-R51IrSbQLK3AfddaQ5Iv-portal.zfsoft.com
+[-] All crawl finish...
+2018-09-25 12:05:08	Http error:Expected object of type bytes or bytearray, got: <type 'unicode'>	url:http://jxgl.bistu.edu.cn/portal.do?ticket=ST-30125-R51IrSbQLK3AfddaQ5Iv-portal.zfsoft.com
+[+] start scan target http://jxgl.bistu.edu.cn/portal.do?ticket=ST-30125-R51IrSbQLK3AfddaQ5Iv-portal.zfsoft.com...
+2018-09-25 12:06:09	Http error:Expected object of type bytes or bytearray, got: <type 'unicode'>	url:http://jxgl.bistu.edu.cn/portal.do?ticket=ST-30125-R51IrSbQLK3AfddaQ5Iv-portal.zfsoft.com
+2018-09-25 12:06:09	Http error:Expected object of type bytes or bytearray, got: <type 'unicode'>	url:http://jxgl.bistu.edu.cn/portal.do?ticket=ST-30125-R51IrSbQLK3AfddaQ5Iv-portal.zfsoft.com
+[-] All crawl finish...
+2018-09-25 12:06:10	Http error:Expected object of type bytes or bytearray, got: <type 'unicode'>	url:http://jxgl.bistu.edu.cn/portal.do?ticket=ST-30125-R51IrSbQLK3AfddaQ5Iv-portal.zfsoft.com
+[+] start scan target http://jxgl.bistu.edu.cn/portal.do?ticket=ST-30125-R51IrSbQLK3AfddaQ5Iv-portal.zfsoft.com...
+2018-09-25 12:07:14	Http error:Expected object of type bytes or bytearray, got: <type 'unicode'>	url:http://jxgl.bistu.edu.cn/portal.do?ticket=ST-30125-R51IrSbQLK3AfddaQ5Iv-portal.zfsoft.com
+2018-09-25 12:07:14	Http error:Expected object of type bytes or bytearray, got: <type 'unicode'>	url:http://jxgl.bistu.edu.cn/portal.do?ticket=ST-30125-R51IrSbQLK3AfddaQ5Iv-portal.zfsoft.com
+[-] All crawl finish...
+2018-09-25 12:07:15	Http error:Expected object of type bytes or bytearray, got: <type 'unicode'>	url:http://jxgl.bistu.edu.cn/portal.do?ticket=ST-30125-R51IrSbQLK3AfddaQ5Iv-portal.zfsoft.com
+[+] start scan target http://jxgl.bistu.edu.cn/portal.do?ticket=ST-30125-R51IrSbQLK3AfddaQ5Iv-portal.zfsoft.com...
+2018-09-25 12:07:27	Http error:Expected object of type bytes or bytearray, got: <type 'unicode'>	url:http://jxgl.bistu.edu.cn/portal.do?ticket=ST-30125-R51IrSbQLK3AfddaQ5Iv-portal.zfsoft.com
+2018-09-25 12:07:27	Http error:Expected object of type bytes or bytearray, got: <type 'unicode'>	url:http://jxgl.bistu.edu.cn/portal.do?ticket=ST-30125-R51IrSbQLK3AfddaQ5Iv-portal.zfsoft.com
+[-] All crawl finish...
+2018-09-25 12:07:28	Http error:Expected object of type bytes or bytearray, got: <type 'unicode'>	url:http://jxgl.bistu.edu.cn/portal.do?ticket=ST-30125-R51IrSbQLK3AfddaQ5Iv-portal.zfsoft.com
+[+] start scan target http://jxgl.bistu.edu.cn/portal.do?ticket=ST-30125-R51IrSbQLK3AfddaQ5Iv-portal.zfsoft.com...
+2018-09-25 12:11:45	Http error:Expected object of type bytes or bytearray, got: <type 'unicode'>	url:http://jxgl.bistu.edu.cn/portal.do?ticket=ST-30125-R51IrSbQLK3AfddaQ5Iv-portal.zfsoft.com
+2018-09-25 12:11:45	Http error:Expected object of type bytes or bytearray, got: <type 'unicode'>	url:http://jxgl.bistu.edu.cn/portal.do?ticket=ST-30125-R51IrSbQLK3AfddaQ5Iv-portal.zfsoft.com
+[-] All crawl finish...
+2018-09-25 12:11:46	Http error:Expected object of type bytes or bytearray, got: <type 'unicode'>	url:http://jxgl.bistu.edu.cn/portal.do?ticket=ST-30125-R51IrSbQLK3AfddaQ5Iv-portal.zfsoft.com
+[+] start scan target http://jxgl.bistu.edu.cn/portal.do?ticket=ST-30125-R51IrSbQLK3AfddaQ5Iv-portal.zfsoft.com...
+2018-09-25 12:12:26	Http error:Expected object of type bytes or bytearray, got: <type 'unicode'>	url:http://jxgl.bistu.edu.cn/portal.do?ticket=ST-30125-R51IrSbQLK3AfddaQ5Iv-portal.zfsoft.com
+2018-09-25 12:12:26	Http error:Expected object of type bytes or bytearray, got: <type 'unicode'>	url:http://jxgl.bistu.edu.cn/portal.do?ticket=ST-30125-R51IrSbQLK3AfddaQ5Iv-portal.zfsoft.com
+[-] All crawl finish...
+2018-09-25 12:12:26	Http error:Expected object of type bytes or bytearray, got: <type 'unicode'>	url:http://jxgl.bistu.edu.cn/portal.do?ticket=ST-30125-R51IrSbQLK3AfddaQ5Iv-portal.zfsoft.com
+[+] start scan target http://jxgl.bistu.edu.cn/portal.do?ticket=ST-30125-R51IrSbQLK3AfddaQ5Iv-portal.zfsoft.com...
+2018-09-25 12:12:41	Crawl url:http://jxgl.bistu.edu.cn/news/152539612311668387.html depth:1
+2018-09-25 12:12:41	Crawl url:http://jxgl.bistu.edu.cn/news/152092438573864484.html depth:1
+2018-09-25 12:12:41	Crawl url:http://jxgl.bistu.edu.cn/news/146303484700899627.html depth:1
+2018-09-25 12:12:41	Crawl url:http://jxgl.bistu.edu.cn/news/152239483369263709.html depth:1
+2018-09-25 12:12:41	Crawl url:http://jxgl.bistu.edu.cn/news/152401885604390872.html depth:1
+2018-09-25 12:12:41	Crawl url:http://www.bistu.edu.cn/ depth:1
+2018-09-25 12:12:41	Crawl url:http://jxgl.bistu.edu.cn/news/152083730282250389.html depth:1
+2018-09-25 12:12:41	Crawl url:http://jxgl.bistu.edu.cn/news/149552317030580580.html depth:1
+2018-09-25 12:12:41	Crawl url:http://jxgl.bistu.edu.cn/news/146303520504420828.html depth:1
+2018-09-25 12:12:41	Crawl url:http://jxgl.bistu.edu.cn/news/149552496626928332.html depth:1
+2018-09-25 12:12:41	Crawl url:http://jxgl.bistu.edu.cn/news/152081719169929060.html depth:1
+2018-09-25 12:12:41	Crawl url:http://jxgl.bistu.edu.cn/news/151488141733367574.html depth:1
+2018-09-25 12:12:41	Crawl url:http://jxgl.bistu.edu.cn/type/0101327.html depth:1
+2018-09-25 12:12:41	Crawl url:http://jxgl.bistu.edu.cn/news/128773242065033997.html depth:1
+2018-09-25 12:12:41	Crawl url:http://jxgl.bistu.edu.cn/news/128773246488578416.html depth:1
+2018-09-25 12:12:41	Crawl url:http://jxgl.bistu.edu.cn/news/152239451358178112.html depth:1
+2018-09-25 12:12:41	Crawl url:http://jxgl.bistu.edu.cn/news/152386855411543893.html depth:1
+2018-09-25 12:12:41	Crawl url:http://jxgl.bistu.edu.cn/news/151131790304926675.html depth:1
+2018-09-25 12:12:41	Crawl url:http://jxgl.bistu.edu.cn/news/146303508306410163.html depth:1
+2018-09-25 12:12:41	Crawl url:http://jxgl.bistu.edu.cn/news/147684450639136097.html depth:1
+2018-09-25 12:12:41	Crawl url:http://jxgl.bistu.edu.cn/news/152108510573433335.html depth:1
+2018-09-25 12:12:41	Crawl url:http://jxgl.bistu.edu.cn/news/151789700828537524.html depth:1
+2018-09-25 12:12:41	Crawl url:http://jxgl.bistu.edu.cn/news/146309835274045789.html depth:1
+2018-09-25 12:12:41	Crawl url:http://jxgl.bistu.edu.cn/news/147494173404086716.html depth:1
+2018-09-25 12:12:41	Crawl url:http://jxgl.bistu.edu.cn/news/152637274345969195.html depth:1
+2018-09-25 12:12:41	Crawl url:http://jxgl.bistu.edu.cn/news/152176622459473676.html depth:1
+2018-09-25 12:12:41	Crawl url:http://jxgl.bistu.edu.cn/news/152833438036050750.html depth:1
+2018-09-25 12:12:41	Crawl url:http://jxgl.bistu.edu.cn/news/152600579707225436.html depth:1
+2018-09-25 12:12:41	Crawl url:http://jxgl.bistu.edu.cn/news/149791828725887397.html depth:1
+2018-09-25 12:12:41	Crawl url:http://jxgl.bistu.edu.cn/type/01011208.html depth:1
+2018-09-25 12:12:41	Crawl url:http://jxgl.bistu.edu.cn/news/128773250943289416.html depth:1
+2018-09-25 12:12:41	Crawl url:http://jxgl.bistu.edu.cn/news/152818178363064391.html depth:1
+2018-09-25 12:12:41	Crawl url:http://jxgl.bistu.edu.cn/news/146303575702942892.html depth:1
+2018-09-25 12:12:43	Crawl url:http://news.bistu.edu.cn/ztbd/xxq/ depth:2
+2018-09-25 12:12:43	Crawl url:http://news.bistu.edu.cn/zhxw/201809/t20180921_53261.html depth:2
+2018-09-25 12:12:43	Crawl url:http://news.bistu.edu.cn/ztbd/2018wenhua/ depth:2
+2018-09-25 12:12:43	Crawl url:http://news.bistu.edu.cn/ztbd/xyddsjd/ depth:2
+2018-09-25 12:12:43	Crawl url:http://news.bistu.edu.cn/ztbd/ depth:2
+2018-09-25 12:12:43	Crawl url:http://news.bistu.edu.cn/ztbd/shpg/ depth:2
+2018-09-25 12:12:43	Crawl url:http://news.bistu.edu.cn/zhxw/201809/t20180925_53278.html depth:2
+2018-09-25 12:12:43	Crawl url:http://news.bistu.edu.cn/ztbd/cyzd/ depth:2
+2018-09-25 12:12:43	Crawl url:http://news.bistu.edu.cn/zhxw/201809/t20180920_53230.html depth:2
+2018-09-25 12:12:43	Crawl url:http://news.bistu.edu.cn/zhxw/201809/t20180925_53274.html depth:2
+2018-09-25 12:12:43	Crawl url:http://news.bistu.edu.cn/zhxw/201809/t20180921_53266.html depth:2
+2018-09-25 12:12:43	Crawl url:http://office.bistu.edu.cn/xwgk/ depth:2
+2018-09-25 12:12:45	Crawl url:http://jxgl.bistu.edu.cn/type/01013210101.html depth:2
+2018-09-25 12:12:45	Crawl url:http://jxgl.bistu.edu.cn/type/0101325803.html depth:2
+2018-09-25 12:12:45	Crawl url:http://jxgl.bistu.edu.cn/type/010131509.html depth:2
+2018-09-25 12:12:45	Crawl url:http://jxgl.bistu.edu.cn/type/0101030310.html depth:2
+2018-09-25 12:12:45	Crawl url:http://jxgl.bistu.edu.cn/type/0101316.html depth:2
+2018-09-25 12:12:45	Crawl url:http://jxgl.bistu.edu.cn/type/010132109.html depth:2
+2018-09-25 12:12:45	Crawl url:http://jxgl.bistu.edu.cn/type/010132501.html depth:2
+2018-09-25 12:12:45	Crawl url:http://jxgl.bistu.edu.cn/type/0101020211.html depth:2
+2018-09-25 12:12:45	Crawl url:http://jxgl.bistu.edu.cn/type/0101321102.html depth:2
+2018-09-25 12:12:46	Crawl url:http://jxgl.bistu.edu.cn/type/010131508.html depth:2
+2018-09-25 12:12:46	Crawl url:http://jxgl.bistu.edu.cn/type/010132404.html depth:2
+2018-09-25 12:12:46	Crawl url:http://jxgl.bistu.edu.cn/type/010132409.html depth:2
+2018-09-25 12:12:46	Crawl url:http://jxgl.bistu.edu.cn/type/010132503.html depth:2
+2018-09-25 12:12:46	Crawl url:http://jxgl.bistu.edu.cn/type/010131512.html depth:2
+2018-09-25 12:12:46	Crawl url:http://jxgl.bistu.edu.cn/type/010132504.html depth:2
+2018-09-25 12:12:46	Crawl url:http://jxgl.bistu.edu.cn/type/010131901.html depth:2
+2018-09-25 12:12:46	Crawl url:http://jxgl.bistu.edu.cn/type/010132011.html depth:2
+2018-09-25 12:12:46	Crawl url:http://www.bistu.edu.cn depth:2
+2018-09-25 12:12:46	Crawl url:http://jxgl.bistu.edu.cn/type/010132017.html depth:2
+2018-09-25 12:12:46	Crawl url:http://jxgl.bistu.edu.cn/type/010131816.html depth:2
+2018-09-25 12:12:46	Crawl url:http://jxgl.bistu.edu.cn/type/01013260203.html depth:2
+2018-09-25 12:12:46	Crawl url:http://jxgl.bistu.edu.cn/type/0101325802.html depth:2
+2018-09-25 12:12:46	Crawl url:http://jxgl.bistu.edu.cn/type/010131815.html depth:2
+2018-09-25 12:12:46	Crawl url:http://jxgl.bistu.edu.cn/type/010132014.html depth:2
+2018-09-25 12:12:46	Crawl url:http://jxgl.bistu.edu.cn/type/010131808.html depth:2
+2018-09-25 12:12:47	Crawl url:http://jxgl.bistu.edu.cn/type/0101325805.html depth:2
+2018-09-25 12:12:47	Crawl url:http://jxgl.bistu.edu.cn/type/01013260104.html depth:2
+2018-09-25 12:12:47	Crawl url:http://jxgl.bistu.edu.cn/type/0101325806.html depth:2
+2018-09-25 12:12:47	Crawl url:http://jxgl.bistu.edu.cn/type/010132407.html depth:2
+2018-09-25 12:12:47	Crawl url:http://jxgl.bistu.edu.cn/type/010131610.html depth:2
+2018-09-25 12:12:47	Crawl url:http://jxgl.bistu.edu.cn/type/010132502.html depth:2
+2018-09-25 12:12:47	Crawl url:http://jxgl.bistu.edu.cn/type/010132405.html depth:2
+2018-09-25 12:12:47	Crawl url:http://jxgl.bistu.edu.cn/type/010131507.html depth:2
+2018-09-25 12:12:47	Crawl url:http://jxgl.bistu.edu.cn/type/010132508.html depth:2
+2018-09-25 12:12:47	Crawl url:http://jxgl.bistu.edu.cn/type/010132013.html depth:2
+2018-09-25 12:12:47	Crawl url:http://jxgl.bistu.edu.cn/type/010132410.html depth:2
+2018-09-25 12:12:47	Crawl url:http://jxgl.bistu.edu.cn/type/010132103.html depth:2
+2018-09-25 12:12:48	Crawl url:http://jxgl.bistu.edu.cn/type/010132506.html depth:2
+2018-09-25 12:12:48	Crawl url:http://jxgl.bistu.edu.cn/type/010131513.html depth:2
+2018-09-25 12:12:48	Crawl url:http://jxgl.bistu.edu.cn/type/0101325804.html depth:2
+2018-09-25 12:12:48	Crawl url:http://jxgl.bistu.edu.cn/type/010131601.html depth:2
+2018-09-25 12:12:48	Crawl url:http://jxgl.bistu.edu.cn/type/010131809.html depth:2
+2018-09-25 12:12:48	Crawl url:http://jxgl.bistu.edu.cn/type/010131511.html depth:2
+2018-09-25 12:12:48	Crawl url:http://jxgl.bistu.edu.cn/type/010132009.html depth:2
+2018-09-25 12:12:48	Crawl url:http://jxgl.bistu.edu.cn/type/01010303.html depth:2
+2018-09-25 12:12:48	Crawl url:http://jxgl.bistu.edu.cn/type/0101030306.html depth:2
+2018-09-25 12:12:48	Crawl url:http://jxgl.bistu.edu.cn/type/010131814.html depth:2
+2018-09-25 12:12:48	Crawl url:http://jxgl.bistu.edu.cn/type/010131702.html depth:2
+2018-09-25 12:12:49	Crawl url:http://jxgl.bistu.edu.cn/type/0101325809.html depth:2
+2018-09-25 12:12:49	Crawl url:http://jxgl.bistu.edu.cn/type/010131602.html depth:2
+[+] start scan target http://jxgl.bistu.edu.cn/portal.do?ticket=ST-30125-R51IrSbQLK3AfddaQ5Iv-portal.zfsoft.com...
+2018-09-25 12:14:08	Crawl url:http://jxgl.bistu.edu.cn/news/152539612311668387.html depth:1
+2018-09-25 12:14:08	Crawl url:http://jxgl.bistu.edu.cn/news/152092438573864484.html depth:1
+2018-09-25 12:14:08	Crawl url:http://jxgl.bistu.edu.cn/news/146303484700899627.html depth:1
+2018-09-25 12:14:08	Crawl url:http://jxgl.bistu.edu.cn/news/152239483369263709.html depth:1
+2018-09-25 12:14:08	Crawl url:http://jxgl.bistu.edu.cn/news/152401885604390872.html depth:1
+2018-09-25 12:14:08	Crawl url:http://www.bistu.edu.cn/ depth:1
+2018-09-25 12:14:08	Crawl url:http://jxgl.bistu.edu.cn/news/152083730282250389.html depth:1
+2018-09-25 12:14:08	Crawl url:http://jxgl.bistu.edu.cn/news/149552317030580580.html depth:1
+2018-09-25 12:14:08	Crawl url:http://jxgl.bistu.edu.cn/news/146303520504420828.html depth:1
+2018-09-25 12:14:08	Crawl url:http://jxgl.bistu.edu.cn/news/149552496626928332.html depth:1
+2018-09-25 12:14:08	Crawl url:http://jxgl.bistu.edu.cn/news/152081719169929060.html depth:1
+2018-09-25 12:14:08	Crawl url:http://jxgl.bistu.edu.cn/news/151488141733367574.html depth:1
+2018-09-25 12:14:08	Crawl url:http://jxgl.bistu.edu.cn/type/0101327.html depth:1
+2018-09-25 12:14:08	Crawl url:http://jxgl.bistu.edu.cn/news/128773242065033997.html depth:1
+2018-09-25 12:14:08	Crawl url:http://jxgl.bistu.edu.cn/news/128773246488578416.html depth:1
+2018-09-25 12:14:08	Crawl url:http://jxgl.bistu.edu.cn/news/152239451358178112.html depth:1
+2018-09-25 12:14:08	Crawl url:http://jxgl.bistu.edu.cn/news/152386855411543893.html depth:1
+2018-09-25 12:14:08	Crawl url:http://jxgl.bistu.edu.cn/news/151131790304926675.html depth:1
+2018-09-25 12:14:08	Crawl url:http://jxgl.bistu.edu.cn/news/146303508306410163.html depth:1
+2018-09-25 12:14:08	Crawl url:http://jxgl.bistu.edu.cn/news/147684450639136097.html depth:1
+2018-09-25 12:14:08	Crawl url:http://jxgl.bistu.edu.cn/news/152108510573433335.html depth:1
+2018-09-25 12:14:08	Crawl url:http://jxgl.bistu.edu.cn/news/151789700828537524.html depth:1
+2018-09-25 12:14:08	Crawl url:http://jxgl.bistu.edu.cn/news/146309835274045789.html depth:1
+2018-09-25 12:14:08	Crawl url:http://jxgl.bistu.edu.cn/news/147494173404086716.html depth:1
+2018-09-25 12:14:08	Crawl url:http://jxgl.bistu.edu.cn/news/152637274345969195.html depth:1
+2018-09-25 12:14:08	Crawl url:http://jxgl.bistu.edu.cn/news/152176622459473676.html depth:1
+2018-09-25 12:14:08	Crawl url:http://jxgl.bistu.edu.cn/news/152833438036050750.html depth:1
+2018-09-25 12:14:08	Crawl url:http://jxgl.bistu.edu.cn/news/152600579707225436.html depth:1
+2018-09-25 12:14:08	Crawl url:http://jxgl.bistu.edu.cn/news/149791828725887397.html depth:1
+2018-09-25 12:14:08	Crawl url:http://jxgl.bistu.edu.cn/type/01011208.html depth:1
+2018-09-25 12:14:08	Crawl url:http://jxgl.bistu.edu.cn/news/128773250943289416.html depth:1
+2018-09-25 12:14:08	Crawl url:http://jxgl.bistu.edu.cn/news/152818178363064391.html depth:1
+2018-09-25 12:14:08	Crawl url:http://jxgl.bistu.edu.cn/news/146303575702942892.html depth:1
