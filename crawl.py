@@ -11,7 +11,6 @@ import lxml.html
 import urlparse
 import time
 from Queue import Queue
-import sqlite3
 import vul_module
 import urllib2
 import chardet
