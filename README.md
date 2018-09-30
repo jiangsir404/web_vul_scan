@@ -17,12 +17,9 @@ web漏洞扫描器
                             after crawling: 1
       --log=LOGFILE_NAME    save log file
 
-支持多线程，爬虫深度，漏洞模块设置。
-目前写好了sql注入，xss，文件包含三个模块。
-误报漏洞还比较多。等待后续优化。
-
-##有问题反馈
-在使用中有任何问题，欢迎反馈给我，可以用以下联系方式跟我交流
-
-* 邮件：dedwod@qq.com
-* QQ: 641199800
+## 功能
+- [x] 基于广度优先的爬虫策略
+- [x] SQL 注入检测
+- [x] xss 检测(只能检测反射性xss)
+- [x] callback 和 redirect 等关键字搜索
+- [ ] 敏感文件搜索

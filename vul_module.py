@@ -105,8 +105,12 @@ class vul_module(threading.Thread):
 
 
 	def Xss_scan(self):
-		TEST_PAYLOAD = ['rivirfortest']
+		TEST_PAYLOAD = [
+			'rivirtest',
+			
+			]
 		XSS_PAYLOAD	= [
+			'"><img>',
 			'<script>confirm(1)</script>',
 			'<scr<script>ipt>alert(1)</scr<script>ipt>',
 			'<svg/onload=prompt(1)>',
@@ -126,27 +130,38 @@ class vul_module(threading.Thread):
 				self.output.print_yellow_text(get_ctime() + '\t' + self.testurl + " => OUTPUT Point(maybe xss)")
 		return 0
 		
-	def FileInclude_scan(self):
-		#http://192.168.87.143/fileincl/example1.php?page=intro.php
-		#如上，要把参数替换成我们想要的,?page=intro.php替换为page=http://www.baidu.com
-		#把全部参数都替换成了payload
-		RFI_PAYLOAD = [
-			"http://www.baidu.com"
-		]
+	# def FileInclude_scan(self):
+	# 	#http://192.168.87.143/fileincl/example1.php?page=intro.php
+	# 	#如上，要把参数替换成我们想要的,?page=intro.php替换为page=http://www.baidu.com
+	# 	#把全部参数都替换成了payload
+	# 	RFI_PAYLOAD = [
+	# 		"http://www.baidu.com"
+	# 	]
+	# 	url = urlparse.urlparse(self.url)
+	# 	url_query = url.query
+	# 	url_query_tmp = []
+	# 	if not url_query:
+	# 		return 0
+	# 	for i in url_query.split('&'):
+	# 		i_tmp = i.replace(i.split('=')[1],RFI_PAYLOAD[0])
+	# 		url_query_tmp = url_query
+	# 		url_query_tmp = url_query_tmp.replace(i,i_tmp)
+	# 		url_tmp = urlparse.urlunparse( urlparse.ParseResult(url.scheme,url.netloc,url.path,url.params,url_query_tmp,url.fragment) )
+	# 		r = requests.get(url=url_tmp,headers=HEADER)
+	# 		if  "tieba.baidu.com" in r.text:
+	# 			return 1
+	# 	return 0
+
+	def Api_scan(self):
 		url = urlparse.urlparse(self.url)
-		url_query = url.query
+		url_query = url.query 
 		url_query_tmp = []
-		if not url_query:
-			return 0
 		for i in url_query.split('&'):
-			i_tmp = i.replace(i.split('=')[1],RFI_PAYLOAD[0])
-			url_query_tmp = url_query
-			url_query_tmp = url_query_tmp.replace(i,i_tmp)
-			url_tmp = urlparse.urlunparse( urlparse.ParseResult(url.scheme,url.netloc,url.path,url.params,url_query_tmp,url.fragment) )
-			r = requests.get(url=url_tmp,headers=HEADER)
-			if  "tieba.baidu.com" in r.text:
-				return 1
-		return 0
+			if i.split('=')[0] == 'callback':
+				self.output.print_yellow_text(get_ctime() + '\t' + self.testurl + " => jsonp callback!")
+			if i.split('=')[0] == 'redirect':
+				self.output.print_yellow_text(get_ctime() + '\t' + self.testurl + " => redirect!")
+
 		
 	def Get_sql_errors(self):
 		
@@ -274,14 +289,15 @@ class vul_module(threading.Thread):
 
 					vul_file.write(self.url + '\t' + "XSS!" + '\n')
 					vul_file.flush()
-			if module == 'rfi':
-				if self.FileInclude_scan():
-					self.output.print_green_text(get_ctime() + '\t' + self.url + " => RFI!")
-					self.logfile.write(get_ctime() + '\t' + self.url + " => RFI!" + '\n')
-					self.logfile.flush()
+			if module == 'api':
+				self.Api_scan()
+				# if self.Api_scan():
+				# 	self.output.print_green_text(get_ctime() + '\t' + self.url + " => api !")
+				# 	self.logfile.write(get_ctime() + '\t' + self.url + " => api !" + '\n')
+				# 	self.logfile.flush()
 
-					vul_file.write(self.url + '\t' + "RFI!" + '\n')
-					vul_file.flush()
+				vul_file.write(self.url + '\t' + "api bug!" + '\n')
+				vul_file.flush()
 
 
 
@@ -312,12 +328,8 @@ class vul_module(threading.Thread):
 			self.logfile.flush()
 			vul_file.write(self.url + '\t' + "XSS vulnerabe!" + '\n')
 			vul_file.flush()
-		elif self.FileInclude_scan():
-			self.output.print_green_text(get_ctime() + '\t' + self.url + " => RFI vulnerabe!" + '\n')
-			self.logfile.write(get_ctime() + '\t' + self.url + " => RFI vulnerabe!" + '\n')
-			self.logfile.flush()
-			vul_file.write(self.url + '\t' + "RFI vulnerabe!" + '\n')
-			vul_file.flush()
+
+			self.Api_scan()
 		else:
 			self.output.print_blue_text(" /** above links is no vulnerabe **/")
 			self.logfile.write(get_ctime() + '\t' + self.url + " => safe" + '\n')

@@ -14,7 +14,7 @@ page.onCallback = function() {
     })
     phantom.exit()
 };
-page.open("https://user.0831home.com/user-index.html", "get", "", function (status) {
+page.open("http://info.so.360.cn/about.html", "get", "", function (status) {
     page.evaluateAsync(function(){
         if (typeof window.callPhantom === 'function') {
             window.callPhantom();

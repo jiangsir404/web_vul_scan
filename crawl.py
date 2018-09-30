@@ -7,7 +7,6 @@ sys.setdefaultencoding("utf-8")
 import requests
 import re
 import threading
-import lxml.html
 import urlparse
 import time
 from Queue import Queue
@@ -52,21 +51,28 @@ class SpiderThread(threading.Thread):
 		# 去除不需要的后缀连接，如jpg,pdf,png之类的
 		link_tmp1 = []
 		for i in link_list:
-			ext = urlparse.urlparse(i)[2].split('.')[-1]
+			url_struct = urlparse.urlparse(i)
+			ext = url_struct[2].split('.')[-1]
 			if ext not in IGNORE_EXT:
-				link_tmp1.append(i)
+				if ext == 'html' and url_struct.query == '': # 过滤伪静态或纯静态页面
+					pass
+				else:
+					link_tmp1.append(i)
+
+			
+
 
 		# 判断link是否是在目标域下
 		link_tmp2 = []
 		for i in link_tmp1:
-			if netlocdeal(urlparse.urlparse(self.target).netloc) == netlocdeal(urlparse.urlparse(i).netloc):
+			if urlparse.urlparse(self.target).netloc == urlparse.urlparse(i).netloc:
+			#if netlocdeal(urlparse.urlparse(self.target).netloc) == netlocdeal(urlparse.urlparse(i).netloc):
 				link_tmp2.append(i)
 
 		return link_tmp2
 
 
 	def SpiderPage(self):
-		
 		try:
 			html = self.get_by_request()
 			# if chardet.detect(html)['encoding'] == 'GB2312':
@@ -83,6 +89,7 @@ class SpiderThread(threading.Thread):
 			self.logfile.write(get_ctime() + '\tHttp error:' + str(e) + '\turl:' + self.deep_url[1] +'\n')
 			self.logfile.flush()
 		# print link_list
+		return []
 		
 
 	def get_by_request(self):
@@ -125,6 +132,8 @@ class SpiderThread(threading.Thread):
 
 		TOTAL_URL = TOTAL_URL | set(link_list)
 		new_url_list = list(TOTAL_URL - pre_url_list)
+
+		#print len(TOTAL_URL),len(new_url_list)
 
 		#添加deep信息,并进行url相似度分析
 		depth = self.deep_url[0] + 1
