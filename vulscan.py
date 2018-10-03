@@ -8,16 +8,16 @@ def vulscan(target,thread_num,depth,module,policy,logfile):
 	global QUEUE
 	global TOTAL_URL
 
-	print "[+] start scan target " + target + '...'
+	print "[+] start scan target " + target
 	logfile.write("[+] start scan target " + target + '...' + '\n') 
 
 	QUEUE.append([0,target])
-	TOTAL_URL.add(target)
+	# TOTAL_URL.add(target) #如果加上这行，那么第一个链接就无法检测了。
 	SpiderThread(target, [0,target],logfile,module).start()
 	print 'test crawl'
 	quit_flag = 0
 	while(quit_flag == 0):
-		while True: # 这个循环是将QUEUE里面的链接都爬去完
+		while True: # 从Queue中获取一条新链接，执行下一个while
 			try:
 				deep_url = QUEUE.pop(0)
 				break
@@ -30,12 +30,12 @@ def vulscan(target,thread_num,depth,module,policy,logfile):
 				else:
 					time.sleep(1)
 					continue
-		while True:  #这个循环是将按照depth递归爬取，每次爬取完一次depth+1
-			if deep_url[0] == depth + 1:
+		while True: 
+			if deep_url[0] == depth + 1: # 如果该链接的depth等于设置的depth,就退出，不爬取该链接
 				break
 			try:
 				if threading.activeCount() < thread_num:
-					SpiderThread(target, deep_url,logfile,module).start()
+					SpiderThread(target, deep_url,logfile,module).start() # target是不变的，deep_url才是变化的链接
 					break
 			except Exception,e:
 				self.logfile.write(get_time() + '\tError:' + str(e) + '\n')

@@ -46,7 +46,6 @@ class vul_module(threading.Thread):
 		self.output = ColorPrinter()
 
 	def Integer_sqlinj_scan(self):
-
 		try:
 			res_md5_1 = md5_encrypt(requests.get(url=self.url,headers=HEADER).text)
 			res_md5_2 = md5_encrypt(requests.get(url=self.url+urlencode('+1'),headers=HEADER).text)
@@ -119,15 +118,22 @@ class vul_module(threading.Thread):
 
 		for test in XSS_PAYLOAD:
 			self.testurl = self.url+urlencode(test)
-			r = requests.get(url=self.testurl,headers=HEADER)
-			#if ( 'alert(1)' or 'prompt(1)' or 'confirm(1)' ) in r.text:
-			if test in r.text:
-				return 1
+			try:
+				r = requests.get(url=self.testurl,headers=HEADER)
+				#if ( 'alert(1)' or 'prompt(1)' or 'confirm(1)' ) in r.text:
+				if test in r.text:
+					return 1
+			except Exception,e:
+				print e
+
 		for test in TEST_PAYLOAD:
 			self.testurl = self.url+urlencode(test)
-			r = requests.get(url=self.testurl,headers=HEADER)
-			if test in r.text:
-				self.output.print_yellow_text(get_ctime() + '\t' + self.testurl + " => OUTPUT Point(maybe xss)")
+			try:
+				r = requests.get(url=self.testurl,headers=HEADER)
+				if test in r.text:
+					self.output.print_yellow_text(get_ctime() + '\t' + self.testurl + " => OUTPUT Point(maybe xss)")
+			except Exception,e:
+				print e
 		return 0
 		
 	# def FileInclude_scan(self):
@@ -270,7 +276,7 @@ class vul_module(threading.Thread):
 	def check(self,module):
 		global vul_file
 		url_struct = urlparse.urlparse(self.url)
-		if url_struct.query != '':
+		if url_struct.query != '': # 没有参数的链接可以爬取，但是不需要检测，过滤没有参数的链接的检测。
 			if module == 'all':
 				self.run()
 			if module == 'sql':

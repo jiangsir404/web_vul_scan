@@ -11,7 +11,7 @@ def main():
 	parser.add_option('-d','--domain',dest = 'domain',help = "Start the domain name")
 	parser.add_option('-t','--thread',dest = 'thread_num',default = 100,help = "Numbers of threads")
 	parser.add_option('--depth',dest = 'depth',default = 3,help = "Crawling dept")
-	parser.add_option('--module',dest = 'module',default = 'all',help = "vulnerability module(sql,xss,rfi)")
+	parser.add_option('-m','--module',dest = 'module',default = 'all',help = "vulnerability module(sql,xss,rfi)")
 	parser.add_option('--policy',dest = 'policy',default = '0',help = "Scan vulnerability when crawling: 0,Scan vulnerability after crawling: 1")
 	parser.add_option('--log',dest = 'logfile_name',default='log.txt',help="save log file")
 

@@ -1,0 +1,4 @@
+http://www.evergrande.com/mobile/news.aspx?type=3	XSS!
+http://sz.evergrande.com/productmap_lr.php?class_id=284&id=1616&class_name=ç²¾åé¡¹ç®	XSS!
+http://sz.evergrande.com/news_lb.php?class_id=168&class_name=é¡¹ç®å¨æ	XSS!
+http://sz.evergrande.com/productmap_list.php?class_id=284&class_name=ç²¾åé¡¹ç®	XSS!
