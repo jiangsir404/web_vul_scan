@@ -1,4 +1,24 @@
-http://www.evergrande.com/mobile/news.aspx?type=3	XSS!
-http://sz.evergrande.com/productmap_lr.php?class_id=284&id=1616&class_name=ç²¾åé¡¹ç®	XSS!
-http://sz.evergrande.com/news_lb.php?class_id=168&class_name=é¡¹ç®å¨æ	XSS!
-http://sz.evergrande.com/productmap_list.php?class_id=284&class_name=ç²¾åé¡¹ç®	XSS!
+http://open.huajiao.com?did=yzbynrxy	String SQL injection!
+http://www.huajiao.com/user/68373593?seelive=yes	Integer SQL injection!
+http://www.huajiao.com/user/26963996?seelive=yes	String SQL injection!
+http://www.huajiao.com/user/35289433?seelive=yes	String SQL injection!
+http://www.huajiao.com/user/69515968?seelive=yes	String SQL injection!
+http://www.huajiao.com/user/36486250?seelive=yes	String SQL injection!
+http://www.huajiao.com/user/32838107?seelive=yes	String SQL injection!
+http://www.huajiao.com/user/23122774?seelive=yes	String SQL injection!
+http://www.huajiao.com/user/35904010?seelive=yes	String SQL injection!
+http://www.huajiao.com/user/24693833?seelive=yes	String SQL injection!
+http://www.huajiao.com/user/21491770?seelive=yes	Integer SQL injection!
+http://www.huajiao.com/user/25698400?seelive=yes	String SQL injection!
+http://www.huajiao.com/user/26102343?seelive=yes	String SQL injection!
+http://www.huajiao.com/user/25481320?seelive=yes	String SQL injection!
+http://www.huajiao.com/user/31829904?seelive=yes	String SQL injection!
+http://www.huajiao.com/user/24653870?seelive=yes	String SQL injection!
+http://www.huajiao.com/user/35897569?seelive=yes	String SQL injection!
+http://www.huajiao.com/user/30642003?seelive=yes	String SQL injection!
+http://www.huajiao.com/user/51764362?seelive=yes	String SQL injection!
+http://www.huajiao.com/user/68160010?seelive=yes	String SQL injection!
+http://www.huajiao.com/user/26325364?seelive=yes	Integer SQL injection!
+http://www.huajiao.com/user/68133086?seelive=yes	String SQL injection!
+http://www.huajiao.com/user/23195036?seelive=yes	String SQL injection!
+http://www.huajiao.com/user/23106638?seelive=yes	String SQL injection!
