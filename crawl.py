@@ -144,7 +144,7 @@ class SpiderThread(threading.Thread):
 		depth = self.deep_url[0] + 1
 		for i in range(len(new_url_list)):
 			if self.url_similar_check(new_url_list[i]):
-				print(get_ctime() + '\tCrawl url:' + new_url_list[i] + ',depth:' + str(depth))
+				print(get_ctime() + '\tCrawl url:' + new_url_list[i] + ' depth:' + str(depth))
 				try:
 					vul_module.vul_module(new_url_list[i],self.logfile).check(self.module)
 					self.logfile.write(get_ctime() + '\tCrawl url:' + new_url_list[i] + ' depth:' + str(depth) + '\n')
