@@ -42,8 +42,8 @@ class SpiderThread(threading.Thread):
 		link_list = []
 		link_list.append(self.deep_url[1])
 		#print 'crawl url:',self.deep_url[1]
-		if not results:
-			return []
+		if not results: # 如果xss链接没有a标签，但本身可以，那么就只检测当前链接。
+			return [self.target]
 		# print results
 		for item in results:
 			if item.has_attr('href'): #判断是否有href标签
@@ -75,14 +75,14 @@ class SpiderThread(threading.Thread):
 			elif IS_CRAWL_SUBDOMAIN == False and up(self.target).netloc == up(i).netloc:
 				link_tmp2.append(i)
 
+		if debug:
+			output.print_blue_text('[debug] GetLinks:'+str(link_tmp2))
 		return link_tmp2
 
 
 	def SpiderPage(self):
 		try:
 			html = self.get_by_request() #用text获取到的页面就是unicode,不需要解码操作
-			html = html.encode('UTF-8')
-			#print type(html)
 			link_list = self.GetLinks(html)
 			return link_list
 
@@ -95,7 +95,11 @@ class SpiderThread(threading.Thread):
 		
 
 	def get_by_request(self):
-		html = requests.get(url=self.deep_url[1],timeout=10,headers=HEADER).text
+		res = requests.get(url=self.deep_url[1],timeout=10,headers=HEADER)
+		html = res.text
+		html = html.encode('UTF-8')
+		if debug:
+			output.print_blue_text('[debug]当前爬取页面信息: status_code'+str(res.status_code)+' length:'+str(len(html)))
 		return html
 
 	def get_by_selenium(self):
@@ -134,9 +138,8 @@ class SpiderThread(threading.Thread):
 
 		TOTAL_URL = TOTAL_URL | set(link_list)
 		new_url_list = list(TOTAL_URL - pre_url_list)
-		#print 'new_url_list:',len(new_url_list),'条链接'
-		#print len(TOTAL_URL),len(new_url_list)
-		#print new_url_list
+		if debug:
+			output.print_blue_text('[debug]new_url_list:'+str(new_url_list)+'新链接数:'+str(len(new_url_list))+' 总共链接数:'+str(len(TOTAL_URL)))
 		#添加deep信息,并进行url相似度分析
 		depth = self.deep_url[0] + 1
 		for i in range(len(new_url_list)):

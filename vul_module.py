@@ -13,6 +13,7 @@ import md5
 import sys
 import re
 import urlparse
+import copy
 import threading
 import dbms as dbms
 from config import *
@@ -105,35 +106,47 @@ class vul_module(threading.Thread):
 
 	def Xss_scan(self):
 		TEST_PAYLOAD = [
-			'rivirtest',
-			
+			'rivirtest'
 			]
 		XSS_PAYLOAD	= [
-			'"><img>',
+			
 			'<script>confirm(1)</script>',
-			'<scr<script>ipt>alert(1)</scr<script>ipt>',
-			'<svg/onload=prompt(1)>',
+			'<img onerror=alert`1` src=0>',
+			'"><img>',
 			'" onfocus=alert(1) autofocus x="'
 		]
+		up = lambda x:urlparse.urlparse(x)
+		url_struct = up(self.url)
+		print 'query:',url_struct.query
+		params = url_struct.query.split('&')
+		
+		for i in range(len(params)): # 对每个参数都加上payload 检测xss
+			for test in XSS_PAYLOAD:
+				querys = copy.deepcopy(params)
+				querys[i] = params[i] + test
+				#print ''.join(querys)
+				url_preix = self.url.partition('?')[0]
+				self.testurl = url_preix+'?'+('&'.join(querys))
+				#print self.testurl
+				try:
+					r = requests.get(url=self.testurl,headers=HEADER)
+					#if ( 'alert(1)' or 'prompt(1)' or 'confirm(1)' ) in r.text:
+					if test in r.text:
+						return 1
+				except Exception,e:
+					print e
 
-		for test in XSS_PAYLOAD:
-			self.testurl = self.url+urlencode(test)
-			try:
-				r = requests.get(url=self.testurl,headers=HEADER)
-				#if ( 'alert(1)' or 'prompt(1)' or 'confirm(1)' ) in r.text:
-				if test in r.text:
-					return 1
-			except Exception,e:
-				print e
-
-		for test in TEST_PAYLOAD:
-			self.testurl = self.url+urlencode(test)
-			try:
-				r = requests.get(url=self.testurl,headers=HEADER)
-				if test in r.text:
-					self.output.print_yellow_text(get_ctime() + '\t' + self.testurl + " => OUTPUT Point(maybe xss)")
-			except Exception,e:
-				print e
+			for test in TEST_PAYLOAD:
+				querys = copy.deepcopy(params)
+				querys[i] = params[i] + test
+				url_preix = self.url.partition('?')[0]
+				self.testurl = url_preix+'?'+('&'.join(querys))
+				try:
+					r = requests.get(url=self.testurl,headers=HEADER)
+					if test in r.text:
+						self.output.print_yellow_text(get_ctime() + '\t' + self.testurl + " => OUTPUT Point(maybe xss)")
+				except Exception,e:
+					print e
 		return 0
 		
 	# def FileInclude_scan(self):

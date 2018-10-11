@@ -23,3 +23,6 @@ web漏洞扫描器
 - [x] SQL 注入检测（未变)
 - [x] xss 检测(加入检测网页输出点的功能，优化 payload)
 - [x] callback 和 redirect 等关键字搜索
+- [x] 加入多个参数的xss检测
+
+http://cdn.adsconf.u.360.cn/bch5_apk/xss.png
