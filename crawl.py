@@ -139,7 +139,7 @@ class SpiderThread(threading.Thread):
 		TOTAL_URL = TOTAL_URL | set(link_list)
 		new_url_list = list(TOTAL_URL - pre_url_list)
 		if debug:
-			output.print_blue_text('[debug]new_url_list:'+str(new_url_list)+'新链接数:'+str(len(new_url_list))+' 总共链接数:'+str(len(TOTAL_URL)))
+			output.print_blue_text('[debug]new_url_list:'+str(new_url_list)+'新链接数:'+str(len(new_url_list))+' 总共链接数:'+str(len(TOTAL_URL))+"\n")
 		#添加deep信息,并进行url相似度分析
 		depth = self.deep_url[0] + 1
 		for i in range(len(new_url_list)):
@@ -151,7 +151,7 @@ class SpiderThread(threading.Thread):
 					self.logfile.flush()
 					QUEUE.append([depth,new_url_list[i]])
 				except:
-					print 'request error'
+					traceback.print_exc()
 
 
 if __name__ == '__main__':
