@@ -23,7 +23,7 @@ SIMILAR_SET = set()
 debug = 0
 output = ColorPrinter()
 
-IS_CRAWL_SUBDOMAIN = True  #默认也会爬取其他子域名，如果需要只爬去某一个子域名，则设置为False
+IS_CRAWL_SUBDOMAIN = False  #默认也会爬取其他子域名，如果需要只爬去某一个子域名，则设置为False
 
 def get_ctime():
 	return time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
