@@ -1,5 +1,6 @@
 #coding:utf8
 import time
+import traceback
 from colorprinter import *
 
 IGNORE_EXT = ['css','js','jpg','png','gif','rar','pdf','doc']
@@ -8,7 +9,7 @@ EXPECT_EXT = ['php','jsp','asp','aspx']
 
 
 HEADER = {
-	'Cookie':"PHPSESSID=bosrgtv10bppuuh1unv2o8nrh6"
+	'Cookie':"PHPSESSID=gqhvekgincgiunfpnm1819drji"
 	#'Cookie':"__huid=111FB5QLrfmXmazjXSCgpKJCE9wpSTUotq8TP5vrSL+uQ=; __guid=193518196.2625901926484400128.1537945307001.5347; __DC_gid=59612149.49732202.1537962193195.1537962193195.1; opennews=1246a5df9011bc33; __sid=65234612.3981878673782017000.1538051400322.209; quCryptCode=D6TqMQxFspm09vZHFMpam08D4L7ToEFGsjbNr5aQyPmDhPSOad5o32EYaDH12NU6XTZTdbY1vQU%253D; quCapStyle=2; Q=u%3D360H3061940700%26n%3Doyvatoyvatovat%26le%3D%26m%3DZGH2WGWOWGWOWGWOWGWOWGWOZwHk%26qid%3D3061940700%26im%3D1_t014896567d42ffc231%26src%3Dpcw_so%26t%3D1; T=s%3Df30e9916edb788605cba1e88193e711b%26t%3D1538051791%26lm%3D%26lf%3D2%26sk%3Df258b40ac3e2046dade6ef531c5e7ae3%26mt%3D1538051791%26rc%3D%26v%3D2.0%26a%3D1; test_cookie_enable=null; monitor_count=8; __gid=133660893.123339936.1538021435934.1538052074654.60"
 	#'Cookie':'JSESSIONID=1B73D55564BC005AF5EB87745860AB8F'
 	#'Cookie':'PHPSESSID=kbnbiqqr1fdec1mm4eg9251k55; __guid=174447738.3574693008836675600.1537962173028.0884; count=2'
@@ -20,7 +21,7 @@ HEADER = {
 QUEUE = []
 TOTAL_URL = set()
 SIMILAR_SET = set()
-debug = 0
+debug = 1
 output = ColorPrinter()
 
 IS_CRAWL_SUBDOMAIN = False  #默认也会爬取其他子域名，如果需要只爬去某一个子域名，则设置为False

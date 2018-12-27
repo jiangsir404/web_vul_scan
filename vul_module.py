@@ -9,7 +9,9 @@ import requests
 import urlparse
 from urllib import quote as urlencode
 from urllib import unquote as urldecode
+from bs4 import BeautifulSoup as bs
 import md5
+import json
 import sys
 import re
 import urlparse
@@ -45,6 +47,17 @@ class vul_module(threading.Thread):
 		self.sql_errors = []
 		self.logfile = logfile
 		self.output = ColorPrinter()
+		up = lambda x:urlparse.urlparse(x)
+		self.url_struct = up(self.url)
+		self.TEST_PAYLOAD = [
+			'rivirtest'
+			]
+		self.XSS_PAYLOAD	= [
+			'<script>confirm(1)</script>',
+			'<img onerror=alert`1` src=0>',
+			'x"><img>',
+			'" onfocus=alert(1) autofocus x="'
+		]
 
 	def Integer_sqlinj_scan(self):
 		try:
@@ -52,7 +65,7 @@ class vul_module(threading.Thread):
 			res_md5_2 = md5_encrypt(requests.get(url=self.url+urlencode('+1'),headers=HEADER).text)
 			res_md5_3 = md5_encrypt(requests.get(url=self.url+urlencode('+1-1'),headers=HEADER).text)
 		except Exception,e:
-			print e
+			traceback.print_exc()
 			res_md5_1 = res_md5_2 = res_md5_3 = 0
 			pass
 
@@ -75,7 +88,7 @@ class vul_module(threading.Thread):
 					res_md5_2 = md5_encrypt(requests.get(url=self.url+urlencode(p0),headers=HEADER).text)
 					res_md5_3 = md5_encrypt(requests.get(url=self.url+urlencode(p1),headers=HEADER).text)
 				except Exception,e:
-					print e
+					traceback.print_exc()
 					res_md5_1 = res_md5_2 = res_md5_3 = 0
 					pass
 				if ( res_md5_1 == res_md5_3 ) and res_md5_1 != res_md5_2:
@@ -103,51 +116,116 @@ class vul_module(threading.Thread):
 				return 1
 		return 0
 
-
-	def Xss_scan(self):
-		TEST_PAYLOAD = [
-			'rivirtest'
-			]
-		XSS_PAYLOAD	= [
-			
-			'<script>confirm(1)</script>',
-			'<img onerror=alert`1` src=0>',
-			'"><img>',
-			'" onfocus=alert(1) autofocus x="'
-		]
-		up = lambda x:urlparse.urlparse(x)
-		url_struct = up(self.url)
-		print 'query:',url_struct.query
-		params = url_struct.query.split('&')
-		
+	def param_get_xss(self):
+		params = self.url_struct.query.split('&')
 		for i in range(len(params)): # 对每个参数都加上payload 检测xss
-			for test in XSS_PAYLOAD:
-				querys = copy.deepcopy(params)
+			for test in self.XSS_PAYLOAD:
+				querys = copy.deepcopy(params) # list 深拷贝
 				querys[i] = params[i] + test
-				#print ''.join(querys)
 				url_preix = self.url.partition('?')[0]
 				self.testurl = url_preix+'?'+('&'.join(querys))
-				#print self.testurl
+				if debug:
+					output.print_blue_text('xss payload: '+self.testurl)
 				try:
 					r = requests.get(url=self.testurl,headers=HEADER)
-					#if ( 'alert(1)' or 'prompt(1)' or 'confirm(1)' ) in r.text:
 					if test in r.text:
 						return 1
 				except Exception,e:
-					print e
+					output.print_red_text(e)
 
-			for test in TEST_PAYLOAD:
+			for test in self.TEST_PAYLOAD:
 				querys = copy.deepcopy(params)
 				querys[i] = params[i] + test
 				url_preix = self.url.partition('?')[0]
 				self.testurl = url_preix+'?'+('&'.join(querys))
+				if debug:
+					output.print_blue_text('test payload: '+self.testurl)
 				try:
 					r = requests.get(url=self.testurl,headers=HEADER)
 					if test in r.text:
 						self.output.print_yellow_text(get_ctime() + '\t' + self.testurl + " => OUTPUT Point(maybe xss)")
 				except Exception,e:
-					print e
+					traceback.print_exc()
+
 		return 0
+
+	def param_post_xss(self):
+		#print 'param_post_xss'
+		#  不判断有验证码的情况
+		# 不判断 form 表单没有submit 按钮的情况
+		# 如果有hidden的默认表单，如果有value，则用默认的value,不修改
+		# post 参数不需要像get一样一个个去检测参数，post直接将所有的input都写上payload即可。
+
+		url_preix = self.url.rpartition('/')[0] #如果是相对路径，则url_preix + actionUrl
+		url_root =  self.url_struct[0]+'://'+self.url_struct[1] #如果指定了根路径，则url_root+actionUrl
+		html = requests.get(url=self.url,headers=HEADER).text
+		soup = bs(html,"html.parser")
+		forms = soup.find_all(name="form")
+		#print forms
+		if not forms:
+			return false
+		for form in forms:
+			if form.has_attr('action'):
+				actionUrl = form['action'] 
+			else:
+				actionUrl = ''
+			if actionUrl == '#' or actionUrl == '': #默认处理
+				self.testurl = self.url
+			elif actionUrl.startswith('/'): #绝对路径处理
+				self.testurl = url_root + actionUrl
+			elif actionUrl.startwith('./') or actionUrl.startswith('../'): #相对路径处理
+				self.testurl = url_preix + actionUrl
+
+			method = form['method']
+			if method == '':
+				method = 'get'
+			sendData = {}
+			for child in form.descendants: #
+				if child.name == 'input' and child['type'] == 'hidden' and child.has_attr('value'):
+					sendData[child['name']] = child['value']
+				elif child.name == 'input' and child.has_attr('name') and not child['type'] == 'hidden':	
+					sendData[child['name']] = ''
+
+			#print '[INFO]:',self.testurl,method,sendData
+
+			for test in self.XSS_PAYLOAD:
+
+				for i in sendData.keys():
+					if sendData[i] == '':
+						sendData[i] = test
+					
+
+				if method.lower() == "post":
+					if debug:
+						output.print_blue_text('post payload: '+str(sendData))
+					r = requests.post(url=self.testurl,data=sendData,headers=HEADER)
+					#print r.text
+					if test in r.text:
+						self.output.print_green_text(get_ctime() + '\t' + self.testurl + " POST XSS: "+ str(sendData))
+						break
+
+				if method.lower() == 'get':
+					query = ''
+					for i in sendData.keys():
+						query += (i + '=' + sendData[i]+'&')
+
+					if debug:
+						output.print_blue_text('get payload: '+str(self.testurl+'?'+query))
+					r = requests.get(url=self.testurl+'?'+query,headers=HEADER)
+					if test in r.text:
+						self.output.print_green_text(get_ctime() + '\t' + self.testurl + " GET XSS: "+ str(self.testurl+'?'+query))
+						break 
+
+
+
+
+	def Xss_scan(self):
+		if self.param_get_xss():
+			return 1
+		elif self.param_post_xss():
+			return 1
+		else:
+			return 0
 		
 	# def FileInclude_scan(self):
 	# 	#http://192.168.87.143/fileincl/example1.php?page=intro.php
@@ -178,7 +256,7 @@ class vul_module(threading.Thread):
 		for i in url_query.split('&'):
 			if i.split('=')[0] == 'callback':
 				self.output.print_yellow_text(get_ctime() + '\t' + self.testurl + " => jsonp callback!")
-			if i.split('=')[0] == 'redirect':
+			if i.split('=')[0] == 'redirect' or i.split('=')[0] == 'resurl':
 				self.output.print_yellow_text(get_ctime() + '\t' + self.testurl + " => redirect!")
 
 		
@@ -288,8 +366,7 @@ class vul_module(threading.Thread):
 
 	def check(self,module):
 		global vul_file
-		url_struct = urlparse.urlparse(self.url)
-		if url_struct.query != '': # 没有参数的链接可以爬取，但是不需要检测，过滤没有参数的链接的检测。
+		if self.url_struct.query != '': # 没有参数的链接可以爬取，但是不需要检测，过滤没有参数的链接的检测。
 			if module == 'all':
 				self.run()
 			if module == 'sql':
@@ -317,6 +394,9 @@ class vul_module(threading.Thread):
 
 				vul_file.write(self.url + '\t' + "api bug!" + '\n')
 				vul_file.flush()
+		else: #对没有参数的链接进行form 表单检测
+			self.param_post_xss()
+
 
 
 
@@ -343,7 +423,7 @@ class vul_module(threading.Thread):
 			vul_file.flush()
 		elif self.Xss_scan():
 			self.output.print_green_text(get_ctime() + '\t' + self.testurl + " => XSS vulnerabe!" + '\n')
-			self.logfile.write(get_ctime() + '\t' + self.url + " => XSS vulnerabe!" + '\n')
+			self.logfile.write(get_ctime() + '\t' + self.testurl + " => XSS vulnerabe!" + '\n')
 			self.logfile.flush()
 			vul_file.write(self.url + '\t' + "XSS vulnerabe!" + '\n')
 			vul_file.flush()
